@@ -7,5 +7,4 @@ setup(
     version="1.0", 
     package_dir={"": "src"},  # Optional
     packages=find_packages(where="src"),  # Required
-    console=["wiper_tool/wiper.py"], 
     install_requires=required)
