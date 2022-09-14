@@ -5,7 +5,7 @@ import tempfile
 import os
 import uuid
 import random
-from typing import Callable
+from typing import Callable, Iterable
 
 def erase_disk_traces(iterations = 10):
     """
@@ -44,7 +44,7 @@ def fill_disk_free_space(chunk_size = 1024 * 1024) -> str:
 
     return temp_file_path
 
-def get_all_matching_elements_under_dir(dir_path: str, does_match_func: Callable[[str], bool], exclude_list=None) -> set[str]:
+def get_all_matching_elements_under_dir(dir_path: str, does_match_func: Callable[[str], bool], exclude_list: Iterable[str] = None) -> set[str]:
     """
     Recursively iterates through all directories and files under a certain path. For each directory
     or file, calls a given function to determine if the directory or file matches a condition.
@@ -78,7 +78,7 @@ def get_all_matching_elements_under_dir(dir_path: str, does_match_func: Callable
 
     return matching_elements
 
-def get_all_dirs_under_dir(dir_path, exclude_list=None) -> set[str]:
+def get_all_dirs_under_dir(dir_path, exclude_list: Iterable[str] = None) -> set[str]:
     """
     Calls get_all_matching_elements_under_dir() with a condition of being a directory.
 
@@ -88,7 +88,7 @@ def get_all_dirs_under_dir(dir_path, exclude_list=None) -> set[str]:
     """
     return get_all_matching_elements_under_dir(dir_path, os.path.isdir, exclude_list)
 
-def get_all_files_under_dir(dir_path, exclude_list=None) -> set[str]:
+def get_all_files_under_dir(dir_path, exclude_list: Iterable[str] = None) -> set[str]:
     """
     Calls get_all_matching_elements_under_dir() with a condition of being a file.
 
