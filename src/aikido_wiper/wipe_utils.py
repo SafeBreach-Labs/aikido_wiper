@@ -78,7 +78,7 @@ def get_all_matching_elements_under_dir(dir_path: str, does_match_func: Callable
 
     return matching_elements
 
-def get_all_dirs_under_dir(dir_path, exclude_list=None):
+def get_all_dirs_under_dir(dir_path, exclude_list=None) -> set[str]:
     """
     Calls get_all_matching_elements_under_dir() with a condition of being a directory.
 
@@ -88,7 +88,7 @@ def get_all_dirs_under_dir(dir_path, exclude_list=None):
     """
     return get_all_matching_elements_under_dir(dir_path, os.path.isdir, exclude_list)
 
-def get_all_files_under_dir(dir_path, exclude_list=None):
+def get_all_files_under_dir(dir_path, exclude_list=None) -> set[str]:
     """
     Calls get_all_matching_elements_under_dir() with a condition of being a file.
 
