@@ -45,7 +45,11 @@ def find_dirs_under_dir_from_args(args) -> set[str]:
     :param args: The command line arguments parsed by argparse.
     :return: The directories to delete 
     """
-    return get_all_dirs_under_dir(args.root_path, parse_list_from_file(args.exclusion_list_path))
+    paths_to_exclude = []
+    if args.exclusion_list_path:
+        paths_to_exclude = parse_list_from_file(args.exclusion_list_path)
+
+    return get_all_dirs_under_dir(args.root_path, paths_to_exclude)
 
 
 def find_files_under_dir_from_args(args) -> set[str]:
@@ -55,7 +59,11 @@ def find_files_under_dir_from_args(args) -> set[str]:
     :param args: The command line arguments parsed by argparse.
     :return: The files to delete 
     """
-    return get_all_files_under_dir(args.root_path, parse_list_from_file(args.exclusion_list_path))
+    paths_to_exclude = []
+    if args.exclusion_list_path:
+        paths_to_exclude = parse_list_from_file(args.exclusion_list_path)
+
+    return get_all_files_under_dir(args.root_path, paths_to_exclude)
 
 
 def find_custom_paths_from_args(args) -> set[str]:
