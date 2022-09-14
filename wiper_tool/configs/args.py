@@ -1,15 +1,20 @@
 import argparse
+from typing import Dict
 from aikido_wiper.indirect_ops.delete.idelete_proxy import IDeleteProxy
 
 from aikido_wiper.indirect_ops.delete.microsoft_defender_delete_proxy import MicrosoftDefenderDeleteProxy
 from aikido_wiper.indirect_ops.delete.sentinel_one_delete_proxy import SentinelOneDeleteProxy
 from .args_specific_actions import create_junction_switch_proxy, find_custom_paths_from_args, find_dirs_under_dir_from_args, find_files_under_dir_from_args, get_preferred_proxy_arg_name
 
+# Maps the proxy command line argument options to their creators.
+# A "creator" creates the proxy based on the args.
 PROXY_ARG_NAME_TO_PROXY_CREATOR = {
     "MICROSOFT_DEFENDER": (create_junction_switch_proxy, MicrosoftDefenderDeleteProxy),
     "SENTINEL_ONE": (create_junction_switch_proxy, SentinelOneDeleteProxy)
 }
 
+# Maps the deletion target command line argument to the functions that fetch the final
+# set of deletion targets.
 DELETION_TARGETS_FINDERS = {
     "ALL_DIRS_UNDER_PATH": find_dirs_under_dir_from_args,
     "ALL_FILES_UNDER_PATH": find_files_under_dir_from_args,
@@ -17,6 +22,13 @@ DELETION_TARGETS_FINDERS = {
 }
 
 def create_proxy_from_conf(args) -> IDeleteProxy:
+    """
+    Creates the deletion proxy given in the configuration. If a proxy was not picked
+    then automatically chooses the best deletion proxy to create.
+
+    :param args: The args parsed by argparse.
+    :return: The created deletion proxy.
+    """
     proxy_arg_name = args.proxy
     if None == proxy_arg_name:
         proxy_arg_name = get_preferred_proxy_arg_name()
@@ -25,7 +37,13 @@ def create_proxy_from_conf(args) -> IDeleteProxy:
     proxy_class = PROXY_ARG_NAME_TO_PROXY_CREATOR[proxy_arg_name][1]
     return create_func(proxy_class, args)
 
-def find_deletion_targets_from_args(args):
+def find_deletion_targets_from_args(args) -> set[str]:
+    """
+    Finds the deletion targets based on the command line arguments.
+
+    :param args: The args parsed by argparse.
+    :return: A set of the paths to delete.
+    """
     return DELETION_TARGETS_FINDERS[args.deletion_target](args)
 
 def parse_args():
@@ -36,7 +54,7 @@ def parse_args():
     proxy_delete_parser = mode_subparsers.add_parser("PROXY_DELETION")
     erase_disk_traces_parser = mode_subparsers.add_parser("ERASE_DISK_TRACES")
 
-    proxy_delete_parser.add_argument("-p","--proxy", help="The proxy security control to use", type=str, required=True, choices=PROXY_ARG_NAME_TO_PROXY_CREATOR.keys())
+    proxy_delete_parser.add_argument("-p","--proxy", help="The proxy security control to use", type=str, choices=PROXY_ARG_NAME_TO_PROXY_CREATOR.keys())
     
     delete_target_subparsers = proxy_delete_parser.add_subparsers(title="deletion_target", dest="deletion_target", required=True)
 
