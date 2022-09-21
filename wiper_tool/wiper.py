@@ -17,19 +17,15 @@ def main():
         return 0
     
     delete_proxy = create_proxy_from_conf(args)
-    deletion_targets = find_deletion_targets_from_args(args)
+    deletion_targets = list(find_deletion_targets_from_args(args))
     
-    before = time.time()
     failed_targets = delete_proxy.indirect_delete_paths(deletion_targets)
-    after = time.time()
 
     print("Failed targets:")
     print("------------------------")
     for path in failed_targets:
         print(path)
     print("------------------------")
-
-    print(f"The deletion took {after - before} seconds")
 
     erase_traces_based_on_args(args)
 

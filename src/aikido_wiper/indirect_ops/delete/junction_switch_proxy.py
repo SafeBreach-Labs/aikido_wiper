@@ -29,6 +29,7 @@ class DecoyPath(object):
         
         self.decoy_dir = decoy_dir
         self.decoy_deepest_dir = os.path.join(self.decoy_dir, os.path.dirname(path_to_delete_without_drive))
+        self.decoy_file_path = os.path.join(self.decoy_deepest_dir, os.path.basename(path_to_delete))
 
         try:
             os.makedirs(self.decoy_deepest_dir)

