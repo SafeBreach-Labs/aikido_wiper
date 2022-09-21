@@ -8,7 +8,7 @@ class IDeleteProxy(ABC):
     """
     
     @abstractmethod
-    def indirect_delete_paths(self, paths_to_delete: Iterable[str]) -> set[str]:
+    def indirect_delete_paths(self, paths_to_delete: list[str]) -> set[str]:
         """
         Using the proxy, trying to delete a list of given paths.
 

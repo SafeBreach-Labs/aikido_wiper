@@ -73,7 +73,7 @@ class JunctionSwitchDeleteProxy(IDeleteProxy):
             self._decoys_root_dir_path = os.path.join(self._windows_drive, str(uuid.uuid4()))
         self._decoy_dir_count = 0
 
-    def indirect_delete_paths(self, paths_to_delete: Iterable[str]) -> set[str]:
+    def indirect_delete_paths(self, paths_to_delete: list[str]) -> set[str]:
         """
         Read parent class doc
         """

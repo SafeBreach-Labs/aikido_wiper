@@ -20,7 +20,7 @@ class MicrosoftDefenderDeleteProxy(JunctionSwitchDeleteProxy):
         self.__target_paths_to_open_handles = {}
         self.__defender_scan_happened = False
 
-    def indirect_delete_paths(self, paths_to_delete: Iterable[str]) -> set[str]:
+    def indirect_delete_paths(self, paths_to_delete: list[str]) -> set[str]:
         """
         Read parent class doc.
         Also, the Microsoft Defender proxy is not able to delete specific files, only
@@ -29,8 +29,17 @@ class MicrosoftDefenderDeleteProxy(JunctionSwitchDeleteProxy):
         """
         for path in paths_to_delete:
             if not os.path.isdir(path):
-                raise NotADirectoryError(f"{type(self).__name__} supports directory deletion only. {path} is not a directory")
+                try:
+                    os.listdir(path)
+                except PermissionError:
+                    # os.path.isdir does not raise exception if there is a permission error,
+                    # it just returns False instead to it needs to be checked.
+                    pass
+                else:
+                    raise NotADirectoryError(f"{type(self).__name__} supports directory deletion only. {path} is not a directory")
 
+        
+        
         return super().indirect_delete_paths(paths_to_delete)
 
     def _before_junction_switch(self, decoy_path: DecoyPath) -> None:
