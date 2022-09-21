@@ -68,7 +68,6 @@ def find_files_under_dir_from_args(args) -> set[str]:
         paths_to_exclude = parse_list_from_file(args.exclusion_list_path)
 
     result = get_all_files_under_dir(args.root_path, paths_to_exclude)
-    result.add(args.root_path)
     return result
 
 
