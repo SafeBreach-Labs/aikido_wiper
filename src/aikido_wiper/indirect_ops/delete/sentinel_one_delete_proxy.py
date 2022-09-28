@@ -1,4 +1,3 @@
-import os
 import win32file
 import time
 import winreg
