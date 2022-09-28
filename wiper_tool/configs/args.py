@@ -57,8 +57,8 @@ def parse_args():
 
     proxy_delete_parser.add_argument("-p","--proxy", help="The proxy security control to use", type=str, choices=PROXY_ARG_NAME_TO_PROXY_CREATOR.keys())
 
-    erace_traces_points_option_strings = [option.name for option in DeletionTargetsOptions]
-    proxy_delete_parser.add_argument("-etp","--erase-traces-point", help="When to execute the part of the wiping that fills the disk to remove traces of deleted files", type=str, choices=erace_traces_points_option_strings)
+    erase_traces_points_option_strings = [option.name for option in DeletionTargetsOptions]
+    proxy_delete_parser.add_argument("-etp","--erase-traces-point", help="When to execute the part of the wiping that fills the disk to remove traces of deleted files", type=str, choices=erase_traces_points_option_strings)
     
     delete_target_subparsers = proxy_delete_parser.add_subparsers(title="deletion_target", dest="deletion_target", required=True)
 
