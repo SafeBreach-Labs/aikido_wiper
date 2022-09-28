@@ -62,9 +62,8 @@ def parse_args():
     
     delete_target_subparsers = proxy_delete_parser.add_subparsers(title="deletion_target", dest="deletion_target", required=True)
 
-    all_dirs_parser = delete_target_subparsers.add_parser(DeletionTargetsOptions.ALL_DIRS_UNDER_PATH.name, help="Try to delete all the directories under the Windows drive")
-    all_dirs_parser.add_argument("root_path", help="The parent path for all the directories to delete", type=str)
-    all_dirs_parser.add_argument("--exclusion-list-path", help="Path to a file with a list of paths to exclude and not mark", required=False)
+    all_dirs_parser = delete_target_subparsers.add_parser(DeletionTargetsOptions.ALL_USER_DATA.name, help="Try to delete the home directory of a certain user")
+    all_dirs_parser.add_argument("target_user", help="The target user to delete its home directory", type=str)
 
     all_files_parser = delete_target_subparsers.add_parser(DeletionTargetsOptions.ALL_FILES_UNDER_PATH.name, help="Try to delete all the files under the Windows drive")
     all_files_parser.add_argument("root_path", help="The parent path for all the file to delete", type=str)

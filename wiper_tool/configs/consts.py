@@ -3,7 +3,7 @@ from enum import Enum
 from aikido_wiper.indirect_ops.delete.microsoft_defender_delete_proxy import MicrosoftDefenderDeleteProxy
 from aikido_wiper.indirect_ops.delete.sentinel_one_delete_proxy import SentinelOneDeleteProxy
 from aikido_wiper.wipe_utils import erase_disk_traces
-from .args_specific_actions import create_junction_switch_proxy, find_custom_paths_from_args, find_dirs_under_dir_from_args, \
+from .args_specific_actions import create_junction_switch_proxy, find_custom_paths_from_args, find_user_dir, \
     find_files_under_dir_from_args, autostart_reboot_erase_point, task_scheduler_reboot_erase_point
 
 class EraseTracesPoint(Enum):
@@ -18,7 +18,7 @@ class DeletionTargetsOptions(Enum):
     """
     Methods to specify the deletion targets in the command line arguments.
     """
-    ALL_DIRS_UNDER_PATH = 0,
+    ALL_USER_DATA = 0,
     ALL_FILES_UNDER_PATH = 1,
     CUSTOM_PATHS = 2
 
@@ -32,7 +32,7 @@ PROXY_ARG_NAME_TO_PROXY_CREATOR = {
 # Maps the deletion targets options to the functions that fetch the final
 # set of deletion targets.
 DELETION_TARGETS_FINDERS = {
-    DeletionTargetsOptions.ALL_DIRS_UNDER_PATH: find_dirs_under_dir_from_args,
+    DeletionTargetsOptions.ALL_USER_DATA: find_user_dir,
     DeletionTargetsOptions.ALL_FILES_UNDER_PATH: find_files_under_dir_from_args,
     DeletionTargetsOptions.CUSTOM_PATHS: find_custom_paths_from_args
 }
