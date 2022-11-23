@@ -46,7 +46,11 @@ class SentinelOneDeleteProxy(JunctionSwitchDeleteProxy):
         """
         key = winreg.OpenKeyEx(winreg.HKEY_LOCAL_MACHINE, r"SYSTEM\CurrentControlSet\Control\Session Manager")
         while True:
-            pending_rename_list = winreg.QueryValueEx(key, "PendingFileRenameOperations")[0]
+            try:
+                pending_rename_list = winreg.QueryValueEx(key, "PendingFileRenameOperations")[0]
+            except FileNotFoundError:
+                time.sleep(1)
+                continue
             if f"\??\{decoy_path.decoy_file_path}" in pending_rename_list:
                 break
             else:
