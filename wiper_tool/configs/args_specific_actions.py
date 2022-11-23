@@ -48,7 +48,7 @@ def find_user_dir(args) -> set[str]:
     :param args: The command line arguments parsed by argparse.
     :return: The directories to delete 
     """
-    result = {}
+    result = set()
     windows_drive = pathlib.Path.home().drive + "\\"
     users_dir = os.path.join(windows_drive, "Users")
     target_user_dir = os.path.join(users_dir, args.target_user)
