@@ -15,6 +15,8 @@ Make sure you installed the Aikido Wiper Library and then run:
 pyinstaller --onefile wiper_tool/wiper.py
 ```
 
+## General Description
+Aikido Wiper is a next-gen wiper that manipulates EDRs and anti viruses in order to delete files.
 ## Usage
 The Aikido Wiper offers two options to begin with:
 ```cmd
