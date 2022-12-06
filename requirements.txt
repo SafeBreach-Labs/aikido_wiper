@@ -1,0 +1,4 @@
+progressbar2==4.0.0
+pyinstaller==5.0
+pywin32==304
+WMI==1.5.1
