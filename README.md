@@ -1,4 +1,14 @@
 # Aikido Wiper
+Presented in Black Hat Europe 2022 Briefings under the title - [**Aikido: Turning EDRs to Malicious Wipers Using 0-day Exploits**](https://www.blackhat.com/eu-22/briefings/schedule/#aikido-turning-edrs-to-malicious-wipers-using--day-exploits-29336)
+
+Full research process is described here - https://www.safebreach.com/resources/blog/safebreach-labs-researcher-discovers-multiple-zero-day-vulnerabilities/
+
+## CVEs issued so far
+* Windows Defender & Windows Defender for Endpoint - **CVE-2022-37971**
+* TrendMicro Apex One - **CVE-2022-45797**
+* Avast Antivirus & AVG Antivirus - **CVE-2022-4173**
+
+The wiper is implemented only for the vulnerabilities found in the Windows Defender, Windows Defender for Endpoint and SentinelOne EDR.
 ## Installation
 ### Aikido Wiper Library
 ```bash
