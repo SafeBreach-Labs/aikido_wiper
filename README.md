@@ -106,5 +106,6 @@ Lets you choose the point in time in which the erase disk traces trick should oc
 #### `--decoy-root-dir`
 The exploits require a creation of decoy malicious files in order to make the AV / EDR try to delete them and then right before the deletion turn the decoys' root directory into a junction point to the Windows drive. This parameter lets you choose where to create the root directory for the decoys which are used for the exploits against the EDRs / AVs. The default directory is a directory with a uuid name in the Windows drive.
 
-
-
+## Author - Or Yair
+* Twitter: [@oryair1999](https://twitter.com/oryair1999)
+* LinkedIn: [Or Yair](https://www.linkedin.com/in/or-yair/)
